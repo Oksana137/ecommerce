@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getProductsInCart } from "../units/storage";
+import CartRow from "./CartRow";
 
-const Cart = () => {
+const Cart = ({ cartQuantities, setCartQuantities }) => {
   const [cart, setCart] = useState(null);
 
   useEffect(() => {
@@ -22,26 +23,11 @@ const Cart = () => {
         <tbody>
           {cart &&
             cart.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  <div className="card card-side">
-                    <figure className="w-36 h-36 shrink-0">
-                      <img
-                        className="w-full h-full object-contain"
-                        src={product.image}
-                        alt={product.title}
-                      />
-                    </figure>
-                    <div className="card-body">
-                      <h2 className="card-title">{product.title}</h2>
-                      <p>{product.price} &#36;</p>
-                    </div>
-                  </div>
-                </td>
-                <td>{product.description}</td>
-                <td>{product.amount}</td>
-                <td>{product.amount * product.price} &#36;</td>
-              </tr>
+              <CartRow
+                product={product}
+                cartQuantities={cartQuantities}
+                setCartQuantities={setCartQuantities}
+              />
             ))}
         </tbody>
       </table>
