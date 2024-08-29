@@ -1,16 +1,22 @@
+import { Link } from "react-router-dom";
+
 const Navigation = () => {
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">eCommerce</a>
+        <Link to={"/"} className="btn btn-ghost text-xl">
+          eCommerce
+        </Link>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a className="btn btn-ghost">Home</a>
+            <Link to={"/"} className="btn btn-ghost">
+              Home
+            </Link>
           </li>
         </ul>
-        <div role="button" className="btn btn-ghost btn-circle">
+        <Link to={"cart"} role="button" className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +34,7 @@ const Navigation = () => {
             </svg>
             <span className="badge badge-sm indicator-item">8</span>
           </div>
-        </div>
+        </Link>
         <div role="button" className="btn btn-ghost btn-circle avatar">
           <div className="w-10 rounded-full">
             <img

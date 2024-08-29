@@ -20,7 +20,7 @@ const ProductCards = () => {
     <div className="flex justify-center flex-wrap gap-16 p-8">
       {products &&
         products.map((product) => (
-          <div className="card bg-base-100 w-96 h-96 shadow-xl">
+          <div key={product.id} className="card bg-base-100 w-96 h-96 shadow-xl">
             <figure className="w-full h-3/5">
               <img
                 className="w-full h-full object-contain"
