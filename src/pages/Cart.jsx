@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProductsInCart } from "../units/storage";
-import CartRow from "./CartRow";
+import CartRow from "../components/CartRow";
 
 const Cart = ({ cartQuantities, setCartQuantities }) => {
   const [cart, setCart] = useState(null);

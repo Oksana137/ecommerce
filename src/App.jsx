@@ -1,6 +1,7 @@
 import MainLayout from "./layouts/MainLayout";
-import Products from "./components/Products";
-import Cart from "./components/Cart";
+import { useState } from "react";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
 import { getCartQuantities } from "./units/storage";
 import {
   createBrowserRouter,
@@ -8,7 +9,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { useState } from "react";
 
 function App() {
   const [cartQuantities, setCartQuantities] = useState(getCartQuantities());
@@ -29,6 +29,15 @@ function App() {
           path="cart"
           element={
             <Cart
+              cartQuantities={cartQuantities}
+              setCartQuantities={setCartQuantities}
+            />
+          }
+        />
+        <Route
+          path="/products/category/:categoryName"
+          element={
+            <Products
               cartQuantities={cartQuantities}
               setCartQuantities={setCartQuantities}
             />

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { addProductToCart, getProductsInCart } from "../units/storage";
+import { useState } from "react";
+import { addProductToCart, isProductInCart } from "../units/storage";
 import Counter from "./Counter";
-import { isProductInCart } from "../units/storage";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
   const [isInCart, setIsInCart] = useState(isProductInCart(product));
@@ -27,6 +27,9 @@ const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
           {product.title.split(" ").slice(0, 3).join(" ")}
         </h2>
         <span>{product.price} &#36;</span>
+        <Link to={`/products/category/${product.category}`}>
+          <a className="link">{product.category}</a>
+        </Link>
         <div className="card-actions justify-end">
           {!isInCart ? (
             <button
