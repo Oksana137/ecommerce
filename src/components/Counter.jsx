@@ -1,12 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { updateProductInCart, deleteProductInCart } from "../units/storage";
+import { CartContext } from "../contexts/CartContext";
 
-const Counter = ({
-  product,
-  cartQuantities,
-  setCartQuantities,
-  setIsInCart,
-}) => {
+const Counter = ({ product, setIsInCart }) => {
+  const { cartQuantities, setCartQuantities } = useContext(CartContext);
   const [amount, setAmount] = useState(product.amount);
 
   const increaseHandle = () => {

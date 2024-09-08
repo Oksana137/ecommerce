@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { addProductToCart, isProductInCart } from "../units/storage";
-import Counter from "./Counter";
 import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { CartContext } from "../contexts/CartContext";
+import Counter from "./Counter";
+import { addProductToCart, isProductInCart } from "../units/storage";
 
-const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
+const ProductCard = ({ product }) => {
   const [isInCart, setIsInCart] = useState(isProductInCart(product));
+  const { cartQuantities, setCartQuantities } = useContext(CartContext);
 
   const addToCartHandle = () => {
     setIsInCart(true);
@@ -14,7 +16,7 @@ const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
   };
 
   return (
-    <div key={product.id} className="card bg-base-100 w-96 h-96 shadow-xl">
+    <div className="card bg-base-100 w-96 h-96 shadow-xl">
       <figure className="w-full h-3/5">
         <img
           className="w-full h-full object-contain"
@@ -27,11 +29,13 @@ const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
           {product.title.split(" ").slice(0, 3).join(" ")}
         </h2>
         <span>{product.price} &#36;</span>
-        <Link to={`/products/category/${product.category}`}>
-          <a className="link">{product.category}</a>
+        <Link to={`/products/category/${product.category}`} className="link">
+          {product.category}
         </Link>
         <div className="card-actions justify-end">
-          {!isInCart ? (
+          {isInCart ? (
+            <Counter product={product} setIsInCart={setIsInCart} />
+          ) : (
             <button
               className="btn btn-primary"
               onClick={() => {
@@ -40,13 +44,6 @@ const ProductCard = ({ product, cartQuantities, setCartQuantities }) => {
             >
               Buy Now
             </button>
-          ) : (
-            <Counter
-              product={product}
-              cartQuantities={cartQuantities}
-              setCartQuantities={setCartQuantities}
-              setIsInCart={setIsInCart}
-            />
           )}
         </div>
       </div>

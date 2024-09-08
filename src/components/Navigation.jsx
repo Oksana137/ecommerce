@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../contexts/CartContext";
 
-const Navigation = ({ cartQuantities }) => {
+const Navigation = () => {
+  const { cartQuantities } = useContext(CartContext);
+
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">

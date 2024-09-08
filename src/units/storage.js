@@ -1,53 +1,41 @@
+let cart = null;
+
 const getProductsInCart = function () {
-  return JSON.parse(localStorage.getItem("cart")) || [];
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+  return cart;
 };
 
-const isProductInCart = (product, cart) => {
-  if (!cart) {
-    cart = getProductsInCart();
-  }
-
-  const productInCart = cart.some((item) => item.id === product.id);
-  if (!productInCart) {
-    return false;
-  }
-
-  return true;
+const isProductInCart = (product) => {
+  getProductsInCart();
+  return cart.some((item) => item.id === product.id);
 };
 
-const loadAmount = (product) => {
+const updateAmount = (product) => {
   const cart = getProductsInCart();
-  if (!isProductInCart(product, cart)) {
-    product.amount = 0;
-    return product;
+
+  if (!isProductInCart(product)) {
+    return { ...product, amount: 0 };
   }
 
-  let productInCart = cart.find((item) => item.id == product.id);
-  product.amount = productInCart.amount;
-  return product;
+  const productInCart = cart.find((item) => item.id === product.id);
+  return { ...product, amount: productInCart.amount };
 };
 
 const getCartQuantities = () => {
-  const cart = getProductsInCart();
-  let amount = 0;
-  cart.forEach((product) => {
-    amount += product.amount;
-  });
-  return amount;
+  getProductsInCart();
+  return cart.reduce((total, product) => total + product.amount, 0);
 };
 
 const addProductToCart = (product) => {
   try {
-    const cart = getProductsInCart();
+    getProductsInCart();
 
-    if (isProductInCart(product, cart)) {
+    if (isProductInCart(product)) {
       updateProductInCart(product);
-      return;
+    } else {
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
     }
-
-    cart.push(product);
-
-    localStorage.setItem("cart", JSON.stringify(cart));
   } catch (error) {
     console.error(
       "An error occurred while adding the product to the cart:",
@@ -56,20 +44,21 @@ const addProductToCart = (product) => {
   }
 };
 
+
 const updateProductInCart = (product) => {
   try {
-    const cart = getProductsInCart();
+    getProductsInCart();
+
     if (!isProductInCart(product, cart)) {
-      console.log(`The are no product in cart with id: ${id}`);
+      console.log(`There is no product in the cart with id: ${product.id}`);
       return;
     }
 
-    cart.forEach((item, index) => {
-      if (item.id === product.id) {
-        cart[index] = product;
-      }
-    });
-    localStorage.setItem("cart", JSON.stringify(cart));
+    const updatedCart = cart.map((item) =>
+      item.id === product.id ? product : item
+    );
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   } catch (error) {
     console.error(
       "An error occurred while updating the product in the cart:",
@@ -80,13 +69,14 @@ const updateProductInCart = (product) => {
 
 const deleteProductInCart = (product) => {
   try {
-    const cart = getProductsInCart();
+    getProductsInCart();
+
     if (!isProductInCart(product, cart)) {
-      console.log(`The are no product in cart with id: ${id}`);
+      console.log(`There is no product in the cart with id: ${product.id}`);
       return;
     }
 
-    let updatedCart = cart.filter((item) => item.id != product.id);
+    const updatedCart = cart.filter((item) => item.id !== product.id);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   } catch (error) {
     console.error(
@@ -98,7 +88,7 @@ const deleteProductInCart = (product) => {
 
 export {
   isProductInCart,
-  loadAmount,
+  updateAmount,
   getProductsInCart,
   getCartQuantities,
   addProductToCart,

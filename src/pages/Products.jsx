@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchProducts } from "../units/network";
-import { loadAmount } from "../units/storage";
+import { updateAmount } from "../units/storage";
 import ProductCard from "../components/ProductCard";
 import Categories from "../components/Categories";
 
-const Products = ({ cartQuantities, setCartQuantities }) => {
+const Products = () => {
   const { categoryName } = useParams();
   const [products, setProducts] = useState(null);
 
@@ -30,13 +30,10 @@ const Products = ({ cartQuantities, setCartQuantities }) => {
       <Categories />
       <div className="flex justify-center flex-wrap gap-16 p-8">
         {products &&
-          products.map((product) => (
-            <ProductCard
-              product={loadAmount(product)}
-              cartQuantities={cartQuantities}
-              setCartQuantities={setCartQuantities}
-            />
-          ))}
+          products.map((product) => {
+            const productCard = updateAmount(product);
+            return <ProductCard key={product.id} product={productCard} />;
+          })}
       </div>
     </>
   );

@@ -1,56 +1,29 @@
-import MainLayout from "./layouts/MainLayout";
-import { useState } from "react";
-import Products from "./pages/Products";
-import Cart from "./pages/Cart";
-import { getCartQuantities } from "./units/storage";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from "react-router-dom";
+import CartContextProvider from "./contexts/CartContext";
+import MainLayout from "./layouts/MainLayout";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
 
 function App() {
-  const [cartQuantities, setCartQuantities] = useState(getCartQuantities());
-
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<MainLayout cartQuantities={cartQuantities} />}>
-        <Route
-          index
-          element={
-            <Products
-              cartQuantities={cartQuantities}
-              setCartQuantities={setCartQuantities}
-            />
-          }
-        />
-        <Route
-          path="cart"
-          element={
-            <Cart
-              cartQuantities={cartQuantities}
-              setCartQuantities={setCartQuantities}
-            />
-          }
-        />
-        <Route
-          path="/products/category/:categoryName"
-          element={
-            <Products
-              cartQuantities={cartQuantities}
-              setCartQuantities={setCartQuantities}
-            />
-          }
-        />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Products />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="/products/category/:categoryName" element={<Products />} />
       </Route>
     )
   );
 
   return (
-    <>
+    <CartContextProvider>
       <RouterProvider router={router} />
-    </>
+    </CartContextProvider>
   );
 }
 
